@@ -78,5 +78,52 @@ Spring
             @PostConstruct  使用在方法上标注该方法是Bean的初始化方法  相当于init-method
             @PreDestory  使用在方法上标注该方法是Bean的销毁方法    相当于destroy-method
 
+            注意：
+                使用注解进行开发时，需要在applicationContext.xml中配置组件扫描，
+                作用是指定哪个包及其子包下的Bean需要进行扫描以便识别使用注解配置的类、字段和方法
+                <context:component-scan base-package="xxx" />
 
+        Spring新注解：
+            使用原始注解还不能全部替代xml配置文件，还需要使用注解替代的配置如下：
+                非自定义的Bean的配置：<bean>
+                加载properties文件的配置：<context:property-placeholder>
+                组件扫描的配置：<context:component-scan />
+                导入其它文件：<import>
 
+            @Configuration：用于指定当前类是一个Spring配置类，当创建容器时会从该类上加载注释
+            @ComponentScan：用于指定作用于Spring的初始化容器时要扫描的包，作用和Spring的xml配置文件中的<component-scan base-package="xxx" />一样
+            @Bean：使用在方法上，标注将该方法的返回值存储到Spring容器中
+            @PropertySource：用于加载.properties文件中的配置
+            @Import：用于导入其它配置类
+
+    Spring集成Junit
+        1、导入Spring集成junit坐标
+        2、使用@Runwith注解替换原来的运行期
+        3、使用@ContextConfiguration指定配置文件或配置类
+        4、使用@Autowired注入需要测试的对象
+        5、创建测试方法进行测试
+
+    Spring集成web环境：
+        1、配置ContextLoaderListener监听器
+        2、使用WebApplicationContextUtils获得应用上下文
+
+SpringMVC：
+    开发步骤：
+        1、导入SpringMVC相关坐标
+        2、配置SpringMVC核心控制器DispatcherServlet
+        3、创建Controller类和视图页面
+        4、使用注解配置Controller类中业务方法的映射地址
+        5、配置SpringMVC核心文件spring-mvc.xml
+        6、客户端发起请求测试
+
+    SpringMVC的执行流程：
+        1、用户发送请求至前端控制器DispatchServlet
+        2、DispatcherServlet收到请求调用HandlerMapping处理器映射器。
+        3、处理器映射器找到具体的处理器(可以根据xml配置、注解进行查找)，生成处理器对象及处理器拦截器(如果有则生成)一并返回给DispatcherServlet
+        4、DispatcherServlet调用HandlerAdapter处理器适配器。
+        5、HandlerAdapter经过适配调用具体的处理器(Controller，也叫后端控制器)。
+        6、Controller执行完成返回ModelAndView。
+        7、HandlerAdapter将controller执行结果ModelAndView返回给DispatcherServlet。
+        8、DispatcherServlet将ModelAndView传给ViewReslover视图解析器。
+        9、ViewReslover解析后返回具体View。
+        10、DispatcherServlet根据View进行渲染视图(即将模型数据填充至视图中)。DispatcherServlet响应用户。
