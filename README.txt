@@ -127,3 +127,57 @@ SpringMVC：
         8、DispatcherServlet将ModelAndView传给ViewReslover视图解析器。
         9、ViewReslover解析后返回具体View。
         10、DispatcherServlet根据View进行渲染视图(即将模型数据填充至视图中)。DispatcherServlet响应用户。
+
+    SpringMVC注解解析：
+        @RequestMapping：用于建立请求URL和处理请求方法之间的对应关系
+            位置：
+                类上：请求URL的第一级访问目录，此处不写的话，就相当于应用的根目录
+                方法上：请求URL的第二级访问目录，于类上的使用@RequestMapping标注的一级目录一起组成访问虚拟路径
+            属性：
+                value：用于指定请求的URL，它和path属性的作用是一样的
+                method：用于指定请求的方式
+                params：用于指定请求参数的条件，它支持简单的表达式，要求请求参数的key和value必须和配置的一模一样
+
+    SpringMVC的数据响应：
+        SpringMVC数据响应方式：
+            1、页面跳转：
+                直接返回字符串：此种方式会将返回的字符串与视图解析器的前后缀拼接后跳转
+                通过ModelAndView对象返回
+            2、回写数据：
+                直接返回字符串：将需要回写的字符串直接返回，但此时需要通过@ResponseBody注解告知SpringMVC框架，方法返回的字符串不是跳转而是直接在http响应体中返回
+                返回对象或集合：
+                    在方法上添加@ResponseBody，在在配置文件中进行以下配置
+                            <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+                                <property name="messageConverters">
+                                    <list>
+                                        <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+                                    </list>
+                                </property>
+                            </bean>
+                    使用上述方法配置比较麻烦，因此可以在配置文件中，可以使用mvc的注释驱动代替上述配置
+    SpringMVC获得请求数据：
+        基本类型参数
+        POJO类型参数
+        数组类型参数
+        集合类型参数
+            1、通过创建一个VO对象，里面设置一个属性为对应的集合
+            2、通过Ajax提交，指定contentType为json形式，那么可以在方法的参数位置使用@RequestBody，直接接收集合数据而无需使用POJO进行包装
+
+        请求数据乱码问题：
+            当post请求时，数据会出现乱码，我们可以设置一个过滤器来进行编码的过滤
+
+        参数绑定注解@RequestParam
+            当请求的参数名称和Controller的业务方法参数名称不一致时，就需要通过@RequestParam注解显示的绑定
+            注解@RequestParam还有如下参数可以使用：
+                value：与请求参数名称
+                required：在此指定请求参数是否必须包括，默认是true，提交时如果没有此参数则报错
+                defaultValue：当没有指定请求参数时，则使用指定的默认值赋值
+
+        获得请求头：
+            1、@RequestHeader
+
+    SpringMVC自定义类型转换器
+        自定义类型转换器步骤：
+            1、定义转换器类实现接口Converter接口
+            2、在配置文件中声明转换器
+            3、在<annotation-driven>中引用转换器
