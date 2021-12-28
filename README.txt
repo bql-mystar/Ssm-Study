@@ -174,10 +174,60 @@ SpringMVC：
                 defaultValue：当没有指定请求参数时，则使用指定的默认值赋值
 
         获得请求头：
-            1、@RequestHeader
+            1、@RequestHeader：使用@RequestHeader可以获得请求头信息，相当于request.getHeader()
+                @RequestHeader注解的属性如下：
+                    value：请求头的名称
+                    required：是否必须携带此头
+            2、@CookieValue：使用@CookieValue可以获得指定Cookie的值
+                @CookieValue注解的属性如下：
+                    value：指定cookie的名称
+                    required：是否必须携带此cookie
+
+        文件上传：
+            1、文件上传三要素：
+                表单项type="file"
+                表单提交方式为post
+                表单的enctype属性是多部分表单形式，及enctype="multipart/form-data"
+
+            2、单文件上传步骤
+                导入fileupload和io坐标
+                配置文件上传解析器
+                编写文件上传代码
 
     SpringMVC自定义类型转换器
         自定义类型转换器步骤：
             1、定义转换器类实现接口Converter接口
             2、在配置文件中声明转换器
             3、在<annotation-driven>中引用转换器
+
+    JdbcTemplate基本使用：
+        开发步骤：
+            1、导入spring-jdbc和spring-tx坐标
+            2、创建数据库表和实体
+            3、创建Jdbc Template对象
+            4、执行数据库操作
+
+    SpringMVC拦截器：
+        SpringMVC拦截器类似于Servlet开发中的过滤器Filter，用于对处理器进行预处理和后处理
+            将拦截器按一定的顺序联结成一条链，这条链称为拦截器链。在访问被拦截的方法或字段时，拦截器链中的拦截器就会按其之前定义的顺序被调用。拦截器也是AOP思想的具体实现
+            拦截器和过滤器的区别:
+                过滤器使用范围：是Servlet规范中的一部分，任何JavaWeb工程都可以使用
+                    拦截范围：在url-pattern中配置了/*之后，可以对所有要访问的资源拦截
+
+                拦截器适用范围：是SpringMVC框架自己的，只有使用了SpringMVC框架的工程才能用
+                    拦截范围：在<mvc:mapping path="" />中配置了/**之后，也可以对所有资源进行拦截，但是可以通过<mvc:exclude-mapping path="" />标签排除不需要拦截的资源
+
+        自定义拦截器：
+            1、创建拦截器类实现HandlerInterceptor接口
+            2、配置拦截器
+            3、测试拦截器的拦截效果
+
+    SpringMVC异常处理：
+        异常处理的两种方式：
+            1、使用SpringMVC提供的简单异常处理器SimpleMappingExceptionResolver
+            2、实现Spring的异常处理接口HandlerExceptionResolver自定义自己的异常处理器
+                自定义异常处理器步骤：
+                    1、创建异常处理器类实现HandlerExceptionResolver
+                    2、配置异常处理类
+                    3、编写异常页面
+                    4、测试异常跳转

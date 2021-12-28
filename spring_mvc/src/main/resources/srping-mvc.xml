@@ -42,4 +42,42 @@
             </list>
         </property>
     </bean>
+
+<!--  配置文件上传解析器  -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+<!--    上传文件的总大小    -->
+        <property name="maxUploadSize" value="5242800" />
+<!--       上传单个文件的大小           -->
+        <property name="maxUploadSizePerFile" value="5242800" />
+<!--    上传文件的编码类型    -->
+        <property name="defaultEncoding" value="utf-8" />
+    </bean>
+
+<!--  配置拦截器  -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+<!--         对哪些资源进行拦截操作   -->
+            <mvc:mapping path="/**"/>
+            <bean class="com.xie.interceptor.MyInterceptor1" />
+        </mvc:interceptor>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.xie.interceptor.MyInterceptor2" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+<!--  配置异常处理器  -->
+<!--    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">-->
+<!--        <property name="defaultErrorView" value="error" />-->
+<!--        <property name="exceptionMappings">-->
+<!--            <map>-->
+<!--                <entry key="com.xie.exception.MyException" value="error2" />-->
+<!--                <entry key="java.lang.ClassCastException" value="error1" />-->
+<!--            </map>-->
+<!--        </property>-->
+<!--    </bean>-->
+
+<!--  自定义异常处理器  -->
+    <bean class="com.xie.resolver.MyExceptionResolver" />
 </beans>

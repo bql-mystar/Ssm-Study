@@ -4,15 +4,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xie.domain.User;
 import com.xie.domain.VO;
+import com.xie.exception.MyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.support.AbstractMultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -144,11 +147,64 @@ public class UserController {
         System.out.println(id);
     }
 
-    // 使用Restful风格
     @RequestMapping(value="/quick18")
     @ResponseBody
     public void qucik18(Date date){
         System.out.println(date);
+    }
+
+    @RequestMapping(value="/quick19")
+    @ResponseBody
+    public void qucik19(@RequestHeader("User-Agent") String user_agent){
+        System.out.println(user_agent);
+    }
+
+    @RequestMapping(value="/quick20")
+    @ResponseBody
+    public void qucik20(@CookieValue("JSESSIONID") String jsessionId){
+        System.out.println(jsessionId);
+    }
+
+    @RequestMapping(value="/quick21")
+    @ResponseBody
+    public void qucik21(String name, MultipartFile file) throws IOException {
+        System.out.println(name);
+        System.out.println(file);
+        // 获得上传文件名称
+        String filename = file.getOriginalFilename();
+        // 保存文件
+//        file.transferTo(new File("./" + filename));
+        File f = new File("D:\\" + filename);
+        System.out.println(f.getAbsolutePath());
+        file.transferTo(f);
+    }
+
+    @RequestMapping(value="/quick22")
+    public ModelAndView qucik22(ModelAndView mv) {
+        mv.addObject("name", "xrz");
+        mv.setViewName("interceptor");
+        return mv;
+    }
+
+    @RequestMapping(value="/quick23")
+    @ResponseBody
+    public void qucik23() {
+        // 抛出类型转换异常
+        throw new ClassCastException();
+    }
+
+    @RequestMapping(value="/quick24")
+    @ResponseBody
+    public void qucik24() {
+        // 抛出分母为0异常
+        int i = 1 / 0;
+    }
+
+    @RequestMapping(value="/quick25")
+    @ResponseBody
+    public void qucik25() throws MyException {
+        // 抛出自定义异常
+        throw new MyException();
     }
 
 }
