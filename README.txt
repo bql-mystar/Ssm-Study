@@ -290,6 +290,62 @@ Spring AOP
         切点表达式的抽取：
             同xml配置aop一样，我们可以将切点表达式抽取。抽取方式是在切面内定义方法，在该方法上使用@Pointcut注解定义切点表达式，然后在在增强注解中进行引用。
 
+    Spring事务控制：
+        Spring声明式事务控制底层就是AOP
+        编程式事务控制：
+            事务的隔离级别：
+                1、读未提交
+                2、读已提交
+                3、可重复读
+                4、串行化
+            事务的传播行为：
+                REQUIRED:如果当前没有事务，就新建一个事务，如果已经存在一个事务中，加入到这个事务中。一般的选择（默认值）
+                SUPPORTS:支持当前事务，如果当前没有事务，就以非事务方式执行(没有事务)
+                MANDATORY:使用当前的事务，如果当前没有事务，就抛出异常
+                REQUERS_NEW:新建事务，如果当前在事务中，把当前事务挂起。
+                NOT_SUPPORTED:以非事务方式执行操作，如果当前存在事务，就把当前事务挂起
+                NEVER:以非事务方式运行，如果当前存在事务，抛出异常
+                NESTED:如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则执行REQUIRED类似的操作
+                超时时间:默认值是-1，没有超时限制。如果有，以秒为单位进行设置
+                是否只读:建议查询时设置为只读
+
+            基于xml的声明式事务控制：
+                1、配置平台事务管理器
+                    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+                        <property name="dataSource" ref="dataSource" />
+                    </bean>
+                2、事务通知的配置
+                    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+                        <tx:attributes>
+                            <tx:method name="*" propagation="REQUIRED" isolation="DEFAULT" read-only="false" timeout="-1"/>
+                        </tx:attributes>
+                    </tx:advice>
+                3、配置事务的aop织入
+                    <aop:config>
+                        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.xie.service.impl.*.*(..))" />
+                    </aop:config>
+
+
+            基于注解的声明式事务控制：
+                1、配置平台事务管理器
+                    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+                        <property name="dataSource" ref="dataSource" />
+                    </bean>
+                2、事务通知的配置
+                    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+                        <tx:attributes>
+                            <tx:method name="*" propagation="REQUIRED" isolation="DEFAULT" read-only="false" timeout="-1"/>
+                        </tx:attributes>
+                    </tx:advice>
+                3、配置事务的aop织入
+                    在方法上使用@Transactional注释，表明该方法有事务控制，也可以在类上使用@Transactional注释，表明该类下的所有方法都有事务控制
+                    当类上和方法上都有@Transactional注释时，就近原则，优先使用方法上的注释配置
+                4、配置事务的注解驱动
+                    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+
+
+
 
 
 

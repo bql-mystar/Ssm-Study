@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+<context:property-placeholder location="classpath:jdbc.properties" />
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <!-- 基本属性 url、user、password -->
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <context:component-scan base-package="com.xie" />
+
+    <!-- 配置平台事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!-- 事务的增强 -->
+<!--    <tx:advice id="txAdvice" transaction-manager="transactionManager">-->
+        <!-- 设置事务的属性信息 -->
+<!--        <tx:attributes>-->
+        <!-- name表示切点方法名称 -->
+        <!-- isolation表示事务的隔离级别 -->
+        <!-- propagation表示事务的传播行为 -->
+        <!-- only表示是否只读 -->
+        <!-- timeout表示超时时间 -->
+<!--            <tx:method name="*" propagation="REQUIRED" isolation="DEFAULT" read-only="false" timeout="-1"/>-->
+<!--        </tx:attributes>-->
+<!--    </tx:advice>-->
+
+    <!-- 配置事务的aop织入 -->
+<!--    <aop:config>-->
+<!--        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.xie.service.impl.*.*(..))" />-->
+<!--    </aop:config>-->
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+
+</beans>
