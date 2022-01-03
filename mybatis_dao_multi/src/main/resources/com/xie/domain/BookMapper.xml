@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xie.mapper.BookMapper">
+      <resultMap id="bookMap" type="com.xie.domain.Book">
+          <id column="bid" property="id" />
+          <result column="btitle" property="btitle"/>
+          <result column="bpub_date" property="bpubDate"/>
+          <!--
+                配置集合信息
+                    property：集合名称
+                    ofType：当前集合中的数据类型
+            -->
+          <collection property="heroList" ofType="com.xie.domain.Hero">
+              <!-- 封装hero的数据 -->
+              <id column="hid" property="id"/>
+              <result column="hname" property="hname"/>
+              <result column="hgender" property="hgender"/>
+              <result column="hcomment" property="hcomment"/>
+          </collection>
+      </resultMap>
+
+    <select id="findAll" resultMap="bookMap">
+        SELECT *, book.id bid, hero.id hid FROM bookinfo book, heroinfo hero WHERE book.id = hero.hbook_id;
+    </select>
+</mapper>

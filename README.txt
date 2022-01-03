@@ -393,6 +393,20 @@ Mybatis
             2、在mybatis核心配置文件中配置PageHelper插件
             3、测试分页数据获取
 
+    Mybatis的多表操作
+
+    MyBatis的常用注解
+    这几年来注解开发越来越流行，Mybatis也可以使用注解开发方式，这样我们就可以减少编写Mapper映射文件了。
+    1、@Insert:实现新增@Update:实现更新
+    2、@Delete:实现删涂@Select:实现查询
+    3、@Result:实现结果集封装
+    4、@Results:可以与@Result一起使用，封装多个结果集
+    5、@One:实现一对一结果集封装
+    6、@Many:实现一对多结果集封装
+
+
+
+
 
 
 
