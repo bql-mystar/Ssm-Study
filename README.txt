@@ -344,6 +344,65 @@ Spring AOP
                     <tx:annotation-driven transaction-manager="transactionManager"/>
 
 
+Mybatis
+    Mybatis开发步骤：
+        1、添加Mybatis坐标
+        2、添加对应表
+        3、编写对应实体类
+        4、编写对应的映射文件
+        5、编写核心文件SqlMapConfig.xml
+        6、编写测试类
+
+    Mybatis执行更新操作，事务默认是不提交的，需要提交事务
+
+    代理开发方式：
+        1.代理开发方式介绍
+        采用Mybatis的代理开发方式实现DAO层的开发，这种方式是我们后面进入企业的主流
+        Mapper接口开发方法只需要程序员编写Mapper接口(相当于Dao接口)，由Mybatis框架根据接口定义创建接口的动态代理对象，代理对象的方法体同上边Dao接口实现类方法。
+
+        Mapper接口开发需要遵循以下规范:
+            1、Mapper.xml文件中的namespace与mapper接口的全限定名相同
+            2、Mapper接口方法名和Mapper.xml中定义的每个statement的id相同
+            3、Mapper接口方法的输入参数类型和mapper.xml中定义的每个sql的parameterType的类型相同
+            4、Mapper接口方法的输出参数类型和mapper.xml中定义的每个sql的resultType的类型相同
+
+    Mybatis映射文件深入：
+        1、动态sql语句
+            动态sql语句概述：Mybatis的映射文件中，前面我们的SQL都是比较简单的，有些时候业务逻辑复杂时，我们的SQL是动态变化的，此时在前面的学习中我们的SQL就不能满足要求了。
+
+            动态sql-if
+            动态sql-foreach
+            SQL片段抽取
+
+    Mybatis核心配置文件深入：
+        1.1 typeHandlers标签
+            无论是MyBatis在预处理语句(PreparedStatement)中设置一个参数时，还是从结果集中取出一个值时，都会用类型处理器将获取的值以合适的方式转换成Java类型。
+            你可以重写类型处理器或创建你自己的类型处理器来处理不支持的或非标准的类型。具体做法为:实现org.apache.ibatis.type.TypeHandler接口，或继承一个很便利的类org.apache.ibatis.type.BaseTypeHandler，然后可以选择性地将它映射到一个JDBC类型。
+                例如需求:一个Java中的Date数据类型，我想将之存到数据库的时候存成一个1970年至今的毫秒数，取出来时转换成java的Date，即java的Date与数据库的varchar毫秒值之间转换。
+
+            开发步骤:
+            1、定义转换类继承类BaseTypeHandler<T>
+            2、覆盖4个未实现的方法，其中setNonNullParameter为java程序设置数据到数据库的回调方法，getNllableResult为查询时mysql的字符串类型转换成java的Type类型的方法
+            3、在MyBatis核心配置文件中进行注册
+            4、测试转换是否正确
+
+    plugins标签：
+        MyBatis可以使用第三方的插件来对功能进行扩展，分页助手PageHelper是将分页的复杂操作进行封装，使用简单的方式即可获得分页的相关数据
+        开发步骤:
+            1、导入通用PageHelper的坐标
+            2、在mybatis核心配置文件中配置PageHelper插件
+            3、测试分页数据获取
+
+
+
+
+
+
+
+
+
+
+
 
 
 

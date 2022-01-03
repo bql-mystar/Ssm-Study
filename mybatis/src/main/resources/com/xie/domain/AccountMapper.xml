@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="accountMapper">
+
+    <select id="findAll" resultType="account">
+        select * from account;
+    </select>
+
+    <!-- parameterType属性指要插入的数据类型 -->
+    <!-- sql语句中使用#{实体属性名}方式引用实体中的属性值 -->
+    <insert id="addOne" parameterType="com.xie.domain.Account">
+        insert into account values(#{id}, #{name}, #{balance});
+    </insert>
+
+    <update id="update" parameterType="com.xie.domain.Account">
+        update account set balance = #{balance} where id = #{id};
+    </update>
+
+    <!--sql语句中使用#{任意字符串}方式引用传递的单个参数-->
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from account where id = #{id}
+    </delete>
+
+</mapper>

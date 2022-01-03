@@ -32,12 +32,12 @@
 <!--    </bean>-->
 
 <!--  集合类型注入  -->
-    <bean id="u1" class="com.xie.domain.User">
+    <bean id="u1" class="com.xie.com.xie.domain.User">
         <property name="name" value="tom" />
         <property name="addr" value="sanming" />
     </bean>
 
-    <bean id="u2" class="com.xie.domain.User">
+    <bean id="u2" class="com.xie.com.xie.domain.User">
         <property name="name" value="jerry" />
         <property name="addr" value="ninghua" />
     </bean>
